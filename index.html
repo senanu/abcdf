@@ -82,7 +82,7 @@ table{
     var C=101;
     var D=101;
     for( final = 100; final >= 1; final--){
-      if(replace){
+      if(replace & final > lowest_exam){
         score = calculate_with_replace(earned_points, total_points, lowest_exam, final);
       } else {
         score = calculate_without_replace(earned_points, total_points, final);
@@ -119,9 +119,11 @@ table{
     }
     return;
   }
+
   function calculate_with_replace(earned_points, total_points, lowest_exam, final_exam){
     return (Math.round(((earned_points + 2*final_exam) + (final_exam - lowest_exam))/(total_points+200)*100));
   }
+
   function calculate_without_replace(earned_points, total_points, final_exam){
     return (Math.round((earned_points + 2*final_exam) / (total_points+200)*100));
   }
