@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+table{
+  width: 50%;
+}
+  form{
+    display: table;
+    width: 50%;
+  }
+  p {
+    display: table-row;
+  }
+  label {
+    display: table-cell;
+    white-space: wrap;
+  }
+
+  input {
+    display: table-cell;
+    height: 25px;
+    border: 1px solid #999;
+  }
+  .val {
+    display: table-cell;
+    text-align: left;
+    color: red;
+  }
+  .res {
+    display: table-cell;
+    text-align: left;
+    color: blue;
+    width: 10%;
+  }
+  #res_div {
+    display: table-cell;
+    width: 25px;
+  }
+
+  </style>
+  <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+</head>
+<body>
+  <script>
+  $(document).ready(function() {
+    $("input[name='input']").on('change', function() {
+      getValues();
+    });
+  });
+  function getValues(){
+    var earned_points = document.getElementById("earned_points");
+    earned_points = Number(earned_points.value);
+    var total_points = document.getElementById("total_points");
+    total_points = Number(total_points.value);
+    var lowest_exam = document.getElementById("lowest_exam");
+    lowest_exam = Number(lowest_exam.value);
+    var replace = $('#replace').is(':checked');
+    console.log(earned_points);
+    console.log(total_points);
+    console.log(lowest_exam);
+    console.log(replace);
+    calculate_all(earned_points, total_points, lowest_exam, replace);
+  }
+  function calculate_all(earned_points, total_points, lowest_exam, replace){
+    var A=101;
+    var B=101;
+    var C=101;
+    var D=101;
+    for( final = 100; final >= 1; final--){
+      if(replace){
+        score = calculate_with_replace(earned_points, total_points, lowest_exam, final);
+      } else {
+        score = calculate_without_replace(earned_points, total_points, final);
+      }
+      if(score >= 90){
+        A = final;
+      }
+      if(score >= 80){
+        B = final;
+      }
+      if(score >= 70){
+        C = final;
+      }
+      if(score >= 60){
+        D = final;
+      }
+      if(A>100){
+        A="Not possible";
+      }
+      if(B>100){
+        B="Not possible";
+      }
+      if(C>100){
+        C="Not possible";
+      }
+      if(D>100){
+        D="Not possible";
+      }
+      document.getElementById("grade_a").innerHTML = A.toString().concat("%");
+      document.getElementById("grade_b").innerHTML = B.toString().concat("%");
+      document.getElementById("grade_c").innerHTML = C.toString().concat("%");
+      document.getElementById("grade_d").innerHTML = D.toString().concat(" %");
+
+    }
+  }
+  function calculate_with_replace(earned_points, total_points, lowest_exam, final_exam){
+    return (Math.round(((earned_points + 2*final_exam) + (final_exam - lowest_exam))/(total_points+200)*100));
+  }
+  function calculate_without_replace(earned_points, total_points, final_exam){
+    return (Math.round((earned_points + 2*final_exam) / (total_points+200)*100));
+  }
+  </script>
+  <h1>Grade calculator</h1>
+  <h2>Input your relevant scores here</h2>
+  <form>
+    <p>
+      <label for="earned"> Enter the total number of points you have earned </label>
+      <input type="text" id="earned_points" value=400 name="input">
+    </p>
+    <p>
+      <label for="total"> Enter the total number of points available for all assignments so far (do not include the final exam) </label>
+      <input type="text" id="total_points" value=500 name="input">
+    </p>
+    <p>
+      <label for="lowexam"> Enter your lowest exam grade</label>
+      <input type="text" id="lowest_exam" value=60 name="input">
+    </p>
+    <p>
+      <label for="replace"> Check here if you expect to be able to replace your lowest exam by your final exam grade (based on attendance)</label>
+      <input type="checkbox" id="replace" value=1 name="input">
+    </p>
+  </form>
+  <h2>You will need to get the following grade on the final exam to get a(n):</h2>
+  <p>
+    <div id="results_a" class="res">A:</div>
+    <div id="grade_a" class="val"></div>
+  </p>
+  <p>
+    <div id="results_b" class="res">B:</div>
+    <div id="grade_b" class="val"></div>
+  </p>
+  <p>
+    <div id="results_c" class="res">C:</div>
+    <div id="grade_c" class="val"></div>
+  </p>
+  <p>
+    <div id="results_d" class="res">D:</div>
+    <div id="grade_d" class="val"></div>
+  </p>
+
+
+  Note that the presence of ungraded assignments will affect your grade beyond what this
+  calculator shows. Usually, they will help your grade if you do them carefully and
+  diligently.
+</body>
+</html>
